@@ -1,60 +1,48 @@
 <template>
-  <nav></nav>
-  <header></header>
   <section>
-    <button v-on:click="obtenerTodos()">Consultar Todos</button>
-    <button>Consultar Por Id</button>
-    <button>Guardar</button>
-    <button>Actualizar</button>
-    <button>Actualizar Parcial</button>
-    <button>Borrar</button>
+    <h3>Guardar Estudiante</h3>
+
+    <input v-model="nombre" placeholder="Nombre" />
+    <input v-model="apellido" placeholder="Apellido" />
+    <input v-model="fechaNacimiento" type="datetime-local" />
+    <input v-model="genero" placeholder="Género" />
+    <input v-model="provincia" placeholder="Provincia" />
+
+    <button @click="guardar">Guardar</button>
+
+    <pre v-if="respuesta">{{ respuesta }}</pre>
   </section>
-  <footer></footer>
 </template>
 
+
 <script>
-import {
-  obtenerEstudiantesFacade,
-  obtenerEstudiantePorIdFacade,
-  guardarFacade,
-  actualizarFacade,
-  actualizarParcialFacade,
-  borrarFacade
-} from "../clients/matricula.js";
+import { guardarFacade } from "../clients/matricula.js";
 
 export default {
   data() {
     return {
       nombre: "",
       apellido: "",
+      fechaNacimiento: "",
+      genero: "",
+      provincia: "",
+      respuesta: null
     };
   },
   methods: {
-    async obtenerTodos() {
-      const res = await obtenerEstudiantesFacade();
-      console.log(res);
-    },
-    async obtenerPorId() {
-      const res = await obtenerEstudiantePorIdFacade();
-      console.log(res);
-    },
     async guardar() {
-      const res = await guardarFacade();
-      console.log(res);
-    },
-    async actualizar() {
-      const res = await actualizarFacade();
-      console.log(res);
-    },
-    async actualizarParcial() {
-      const res = await actualizarParcialFacade();
-      console.log(res);
-    },
-    async borrar() {
-      const res = await borrarFacade();
-      console.log(res);
-    },
-  },
+      const body = {
+        nombre: this.nombre,
+        apellido: this.apellido,
+        fechaNacimiento: this.fechaNacimiento + ":00",
+        genero: this.genero,
+        provincia: this.provincia
+      };
+
+      const res = await guardarFacade(body);
+      this.respuesta = JSON.stringify(res, null, 2);
+    }
+  }
 };
 </script>
 

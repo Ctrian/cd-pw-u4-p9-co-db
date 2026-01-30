@@ -1,7 +1,12 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/ListarTodos">Listar Todos</router-link>  |
+    <router-link to="/buscarXid">Buscar Por Id</router-link>  |
+    <router-link to="/actualizar">Actualizar</router-link>  |
+    <router-link to="/actualizarParcial">Actualizar Parcial</router-link>  |
+    <router-link to="/guardar">Guardar</router-link>  |
+    <router-link to="/eliminar">Eliminar</router-link>  |
   </nav>
   <router-view/>
 </template>

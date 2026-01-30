@@ -1,14 +1,14 @@
 <template>
   <h1>esta es la vista</h1>
-  <AboutComponent/>
+  <Eliminar/>
 </template>
 
 <script>
-import AboutComponent from "../components/ConsultarTodos.vue";
+import Eliminar from "../components/Eliminar.vue";
 
 export default {
   components: {
-    AboutComponent,
+    Eliminar,
   },
 };
 </script>

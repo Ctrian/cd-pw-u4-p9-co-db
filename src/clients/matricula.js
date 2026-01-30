@@ -9,7 +9,7 @@ const consultarTodos = async () => {
 };
 
 const consultarPorId = async (id) => {
-  const respuesta = axios
+  const respuesta = await axios
     .get(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`)
     .then((respuesta) => respuesta.data);
   console.log(respuesta);
@@ -17,19 +17,20 @@ const consultarPorId = async (id) => {
 };
 
 const guardar = async (body) => {
-  // const obj = {
-  //   nombre: "a",
-  //   apellido: "b",
-  // };
-  const r = axios
-    .post("http://localhost:8081/matricula/api/v1.0/estudiantes", body)
-    .then((r) => r.data);
-  console.log(r);
-  return r;
+  const r = await axios.post(
+    "http://localhost:8081/matricula/api/v1.0/estudiantes",
+    body,
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+  return r.data;
 };
 
 const actualizar = async (id, body) => {
-  const r = axios
+  const r = await axios
     .put(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`, body)
     .then((r) => r.data);
   console.log(r);
@@ -44,7 +45,7 @@ const actualizarParcial = async (id, body) => {
   return r;
 };
 
-const borrar = (id) => {
+const borrar = async (id) => {
   axios.delete(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`).then(r => r.data);
 }
 
@@ -56,8 +57,8 @@ export async function obtenerEstudiantePorIdFacade(id) {
   return await consultarPorId(id);
 }
 
-export async function guardarFacade() {
-  return await guardar();
+export async function guardarFacade(body) {
+  return await guardar(body);
 }
 
 export async function actualizarFacade(id, body) {

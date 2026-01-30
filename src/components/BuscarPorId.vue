@@ -1,60 +1,34 @@
 <template>
-  <nav></nav>
-  <header></header>
   <section>
-    <button v-on:click="obtenerTodos()">Consultar Todos</button>
-    <button>Consultar Por Id</button>
-    <button>Guardar</button>
-    <button>Actualizar</button>
-    <button>Actualizar Parcial</button>
-    <button>Borrar</button>
+    <h3>Consultar Estudiante por ID</h3>
+
+    <input v-model="id" type="number" placeholder="ID" />
+
+    <button @click="obtenerPorId">
+      Consultar Por Id
+    </button>
+
+    <label>Respuesta:</label>
+    <pre v-if="respuesta">{{ respuesta }}</pre>
   </section>
-  <footer></footer>
 </template>
 
 <script>
-import {
-  obtenerEstudiantesFacade,
-  obtenerEstudiantePorIdFacade,
-  guardarFacade,
-  actualizarFacade,
-  actualizarParcialFacade,
-  borrarFacade
-} from "../clients/matricula.js";
+import { obtenerEstudiantePorIdFacade } from "../clients/matricula.js";
 
 export default {
   data() {
     return {
-      nombre: "",
-      apellido: "",
+      id: null,
+      respuesta: null
     };
   },
   methods: {
-    async obtenerTodos() {
-      const res = await obtenerEstudiantesFacade();
-      console.log(res);
-    },
     async obtenerPorId() {
-      const res = await obtenerEstudiantePorIdFacade();
-      console.log(res);
-    },
-    async guardar() {
-      const res = await guardarFacade();
-      console.log(res);
-    },
-    async actualizar() {
-      const res = await actualizarFacade();
-      console.log(res);
-    },
-    async actualizarParcial() {
-      const res = await actualizarParcialFacade();
-      console.log(res);
-    },
-    async borrar() {
-      const res = await borrarFacade();
-      console.log(res);
-    },
-  },
+      const res = await obtenerEstudiantePorIdFacade(this.id);
+      this.respuesta = JSON.stringify(res, null, 2);
+    }
+  }
 };
 </script>
 

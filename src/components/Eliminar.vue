@@ -1,55 +1,35 @@
 <template>
-  <nav></nav>
-  <header></header>
   <section>
-    <button v-on:click="borrarFacade()">Borrar</button>
+    <h3>Borrar Estudiante</h3>
+
+    <input v-model="id" type="number" placeholder="ID a borrar" />
+
+    <button @click="borrar">Borrar</button>
+
+    <pre v-if="respuesta">{{ respuesta }}</pre>
   </section>
-  <footer></footer>
 </template>
 
 <script>
-import {
-  obtenerEstudiantesFacade,
-  obtenerEstudiantePorIdFacade,
-  guardarFacade,
-  actualizarFacade,
-  actualizarParcialFacade,
-  borrarFacade
-} from "../clients/matricula.js";
+import { borrarFacade } from "../clients/matricula.js";
 
 export default {
   data() {
     return {
-      nombre: "",
-      apellido: "",
+      id: null,
+      respuesta: null
     };
   },
   methods: {
-    async obtenerTodos() {
-      const res = await obtenerEstudiantesFacade();
-      console.log(res);
-    },
-    async obtenerPorId() {
-      const res = await obtenerEstudiantePorIdFacade();
-      console.log(res);
-    },
-    async guardar() {
-      const res = await guardarFacade();
-      console.log(res);
-    },
-    async actualizar() {
-      const res = await actualizarFacade();
-      console.log(res);
-    },
-    async actualizarParcial() {
-      const res = await actualizarParcialFacade();
-      console.log(res);
-    },
     async borrar() {
-      const res = await borrarFacade();
-      console.log(res);
-    },
-  },
+      try {
+        const res = await borrarFacade(this.id);
+        this.respuesta = res ? JSON.stringify(res, null, 2) : "Borrado con éxito";
+      } catch (err) {
+        this.respuesta = "Error: " + (err.response?.data || err.message);
+      }
+    }
+  }
 };
 </script>
 
