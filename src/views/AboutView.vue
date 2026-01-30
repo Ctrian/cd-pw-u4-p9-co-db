@@ -1,5 +1,17 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <h1>esta es la vista</h1>
+  <AboutComponent/>
 </template>
+
+<script>
+import AboutComponent from "../components/ConsultarTodos.vue";
+
+export default {
+  components: {
+    AboutComponent,
+  },
+};
+</script>
+
+<style>
+</style>
