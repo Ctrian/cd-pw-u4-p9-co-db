@@ -15,20 +15,26 @@
 
 <script>
 import { obtenerEstudiantePorIdFacade } from "../clients/matricula.js";
+import { obtenerTokenFacade } from "../clients/oauth.js";
 
 export default {
   data() {
     return {
       id: null,
-      respuesta: null
+      respuesta: null,
+      token: null
     };
   },
   methods: {
     async obtenerPorId() {
-      const res = await obtenerEstudiantePorIdFacade(this.id);
+      const res = await obtenerEstudiantePorIdFacade(this.id, this.token);
       this.respuesta = JSON.stringify(res, null, 2);
     }
-  }
+  },
+  async mounted() {
+    this.token = await obtenerTokenFacade();
+    console.log("Token obtenido:", this.token);
+  },
 };
 </script>
 

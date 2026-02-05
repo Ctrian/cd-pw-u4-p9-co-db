@@ -14,21 +14,30 @@
 
 <script>
 import { obtenerEstudiantesFacade } from "../clients/matricula.js";
+import { obtenerTokenFacade } from "../clients/oauth.js";
 
 export default {
   data() {
     return {
-      nombre: "",
-      apellido: "",
       respuesta: null,
+      token: null,
     };
   },
+
   methods: {
     async obtenerTodos() {
-      const res = await obtenerEstudiantesFacade();
-      console.log(res);
+      if (!this.token) {
+        console.error("Token no disponible");
+        return;
+      }
+
+      const res = await obtenerEstudiantesFacade(this.token);
       this.respuesta = JSON.stringify(res, null, 2);
     },
+  },
+  async mounted() {
+    this.token = await obtenerTokenFacade();
+    console.log("Token obtenido:", this.token);
   },
 };
 </script>

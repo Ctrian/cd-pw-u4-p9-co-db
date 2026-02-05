@@ -23,6 +23,7 @@
 
 <script>
 import { actualizarFacade } from "../clients/matricula.js";
+import { obtenerTokenFacade } from "../clients/oauth.js";
 
 export default {
   data() {
@@ -33,7 +34,8 @@ export default {
       fechaNacimiento: "",
       genero: "",
       provincia: "",
-      respuesta: null
+      respuesta: null,
+      token: null
     };
   },
   methods: {
@@ -51,6 +53,10 @@ export default {
       const res = await actualizarFacade(this.id, body);
       this.respuesta = JSON.stringify(res, null, 2);
     }
+  }, mounted() {
+    obtenerTokenFacade().then((res) => {
+      console.log("Token obtenido:", res);
+    });
   }
 };
 </script>
