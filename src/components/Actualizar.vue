@@ -50,16 +50,15 @@ export default {
         links: [] // normalmente el backend los ignora o los recalcula
       };
 
-      const res = await actualizarFacade(this.id, body);
+      const res = await actualizarFacade(this.id, body, this.token);
       this.respuesta = JSON.stringify(res, null, 2);
     }
-  }, mounted() {
-    obtenerTokenFacade().then((res) => {
-      console.log("Token obtenido:", res);
-    });
-  }
+  },
+  async mounted() {
+    this.token = await obtenerTokenFacade(this.token);
+    console.log("Token obtenido:", this.token);
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

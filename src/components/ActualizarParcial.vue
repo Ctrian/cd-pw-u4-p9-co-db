@@ -17,6 +17,7 @@
 
 <script>
 import { actualizarParcialFacade } from "../clients/matricula.js";
+import { obtenerTokenFacade } from "../clients/oauth.js";
 
 export default {
   data() {
@@ -24,7 +25,8 @@ export default {
       id: null,
       nombre: "",
       apellido: "",
-      respuesta: null
+      respuesta: null,
+      token: null
     };
   },
   methods: {
@@ -35,12 +37,24 @@ export default {
       if (this.nombre) body.nombre = this.nombre;
       if (this.apellido) body.apellido = this.apellido;
 
-      const res = await actualizarParcialFacade(this.id, body);
-      this.respuesta = JSON.stringify(res, null, 2);
+      const res = await actualizarParcialFacade(this.id, body, this.token);
+
+      // Construir respuesta mostrando los datos actualizados
+      const respuestaDetallada = {
+        mensaje: "Actualización parcial exitosa",
+        id: this.id,
+        camposActualizados: body,
+        respuestaServidor: res
+      };
+
+      this.respuesta = JSON.stringify(respuestaDetallada, null, 2);
     }
+  },
+  async mounted() {
+    this.token = await obtenerTokenFacade();
+    console.log("Token obtenido:", this.token);
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>

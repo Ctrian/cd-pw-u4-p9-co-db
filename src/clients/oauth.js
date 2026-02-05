@@ -12,7 +12,7 @@ const obtenerToken = async () => {
     body
   );
 
-  return respuesta.data.accessToken; // 👈 SOLO el token
+  return respuesta.data.accessToken;
 };
 
 export async function obtenerTokenFacade() {

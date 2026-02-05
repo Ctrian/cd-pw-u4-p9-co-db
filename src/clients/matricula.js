@@ -28,15 +28,35 @@ const consultarPorId = async (id, token) => {
   return respuesta;
 };
 
-const actualizar = async (id, body) => {
+const actualizar = async (id, body, token) => {
   const r = await axios
-    .put(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`, body)
+    .put(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`, body, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          `Bearer ${token}`,
+      },
+    })
     .then((r) => r.data);
   console.log(r);
   return r;
 };
 
-const guardar = async (body) => {
+const actualizarParcial = async (id, body, token) => {
+  const r = await axios
+    .patch(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`, body, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          `Bearer ${token}`,
+      },
+    })
+    .then((r) => r.data);
+  console.log(r);
+  return r;
+};
+
+const guardar = async (body, token) => {
   const r = await axios.post(
     "http://localhost:8081/matricula/api/v1.0/estudiantes",
     body,
@@ -51,18 +71,18 @@ const guardar = async (body) => {
   return r.data;
 };
 
-const actualizarParcial = async (id, body) => {
-  const r = axios
-    .patch(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`, body)
+const borrar = async (id, token) => {
+  const r = await axios
+    .delete(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          `Bearer ${token}`,
+      },
+    })
     .then((r) => r.data);
   console.log(r);
   return r;
-};
-
-const borrar = async (id) => {
-  axios
-    .delete(`http://localhost:8081/matricula/api/v1.0/estudiantes/${id}`)
-    .then((r) => r.data);
 };
 
 export async function obtenerEstudiantesFacade(token) {
@@ -73,18 +93,18 @@ export async function obtenerEstudiantePorIdFacade(id, token) {
   return await consultarPorId(id, token);
 }
 
-export async function guardarFacade(body) {
-  return await guardar(body);
+export async function actualizarFacade(id, body, token) {
+  return await actualizar(id, body, token);
 }
 
-export async function actualizarFacade(id, body) {
-  return await actualizar(id, body);
+export async function actualizarParcialFacade(id, body, token) {
+  return await actualizarParcial(id, body, token);
 }
 
-export async function actualizarParcialFacade(id, body) {
-  return await actualizarParcial(id, body);
+export async function guardarFacade(body, token) {
+  return await guardar(body, token);
 }
 
-export async function borrarFacade(id) {
-  return await borrar(id);
+export async function borrarFacade(id, token) {
+  return await borrar(id, token);
 }

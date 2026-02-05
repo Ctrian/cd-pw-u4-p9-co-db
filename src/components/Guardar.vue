@@ -17,6 +17,7 @@
 
 <script>
 import { guardarFacade } from "../clients/matricula.js";
+import { obtenerTokenFacade } from "../clients/oauth.js";
 
 export default {
   data() {
@@ -26,7 +27,8 @@ export default {
       fechaNacimiento: "",
       genero: "",
       provincia: "",
-      respuesta: null
+      respuesta: null,
+      token: null
     };
   },
   methods: {
@@ -39,12 +41,15 @@ export default {
         provincia: this.provincia
       };
 
-      const res = await guardarFacade(body);
+      const res = await guardarFacade(body, this.token);
       this.respuesta = JSON.stringify(res, null, 2);
     }
+  },
+  async mounted() {
+    this.token = await obtenerTokenFacade();
+    console.log("Token obtenido:", this.token);
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>

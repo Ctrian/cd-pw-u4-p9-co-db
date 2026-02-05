@@ -5,8 +5,7 @@
     <button v-on:click="obtenerTodos()">Consultar Todos</button>
 
     <label>Respuesta:</label>
-    <pre v-if="respuesta"
-      >{{ respuesta }}
+    <pre v-if="respuesta">{{ respuesta }}
     </pre>
   </section>
   <footer></footer>
@@ -36,11 +35,10 @@ export default {
     },
   },
   async mounted() {
-    this.token = await obtenerTokenFacade();
+    this.token = await obtenerTokenFacade(this.token);
     console.log("Token obtenido:", this.token);
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>
