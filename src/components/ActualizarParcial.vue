@@ -17,7 +17,6 @@
 
 <script>
 import { actualizarParcialFacade } from "../clients/matricula.js";
-import { obtenerTokenFacade } from "../clients/oauth.js";
 
 export default {
   data() {
@@ -50,9 +49,12 @@ export default {
       this.respuesta = JSON.stringify(respuestaDetallada, null, 2);
     }
   },
-  async mounted() {
-    this.token = await obtenerTokenFacade();
-    console.log("Token obtenido:", this.token);
+  mounted() {
+    this.token = localStorage.getItem("token");
+    if (!this.token) {
+      alert("No estás autenticado. Redirigiendo al login...");
+      this.$router.push({ name: "login" });
+    }
   }
 };
 </script>

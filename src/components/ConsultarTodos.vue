@@ -13,7 +13,6 @@
 
 <script>
 import { obtenerEstudiantesFacade } from "../clients/matricula.js";
-import { obtenerTokenFacade } from "../clients/oauth.js";
 
 export default {
   data() {
@@ -27,6 +26,8 @@ export default {
     async obtenerTodos() {
       if (!this.token) {
         console.error("Token no disponible");
+        alert("No hay token de autenticación. Por favor, inicia sesión.");
+        this.$router.push({ name: "login" });
         return;
       }
 
@@ -34,9 +35,17 @@ export default {
       this.respuesta = JSON.stringify(res, null, 2);
     },
   },
-  async mounted() {
-    this.token = await obtenerTokenFacade(this.token);
-    console.log("Token obtenido:", this.token);
+  mounted() {
+    // Obtener el token desde localStorage
+    this.token = localStorage.getItem("token");
+
+    if (!this.token) {
+      console.error("No hay token en localStorage");
+      alert("No estás autenticado. Redirigiendo al login...");
+      this.$router.push({ name: "login" });
+    } else {
+      console.log("Token recuperado desde localStorage");
+    }
   },
 };
 </script>

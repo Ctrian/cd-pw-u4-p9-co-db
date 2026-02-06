@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const obtenerToken = async () => {
+const obtenerToken = async (username, password, email) => {
   const body = {
-    username: "carlos",
-    password: "123456",
-    email: "carlos@email.com",
+    username,
+    password,
+    email,
   };
 
   const respuesta = await axios.post(
@@ -15,6 +15,6 @@ const obtenerToken = async () => {
   return respuesta.data.accessToken;
 };
 
-export async function obtenerTokenFacade() {
-  return await obtenerToken();
+export async function obtenerTokenFacade(username, password, email) {
+  return await obtenerToken(username, password, email);
 }

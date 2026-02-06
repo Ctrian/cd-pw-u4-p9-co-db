@@ -7,6 +7,8 @@
       <input v-model="usuario" type="text" placeholder="Usuario" />
       <label for="">Contrasenia</label>
       <input v-model="password" type="password" placeholder="Contrasenia" />
+      <label for="">Email</label>
+      <input v-model="email" type="email" placeholder="Email" />
       <button v-on:click="login()">Entrar</button>
     </div>
   </section>
@@ -21,20 +23,31 @@ export default {
     return {
       usuario: "",
       password: "",
+      email: "",
+      token: "",
     };
   },
   methods: {
-    login() {
-      /* Obtener el token */
-      const TOKEN =
-        "eeyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJtYXRyaWN1bGEtYXV0aCIsInN1YiI6ImNhcmxvcyIsInVwbiI6ImNhcmxvc0BlbWFpbC5jb20iLCJncm91cHMiOlsiYWRtaW4iLCJ1c2VyIl0sInVzZXJJZCI6MSwiaWF0IjoxNzcwMzM3NDMxLCJleHAiOjE3NzAzNDEwMzEsImp0aSI6IjA1MjI3MzA4LTM4ZjMtNDY3ZS1iZjJlLWNjNWI2ZjU4ZmNmNSJ9.AJB8JXPJn32gg3sn5OOMZvHJp9DXyz66ifmnc_ByWf8IsIUVO96I7IXWdZsWEMmzmFuw9Ae-kgnsgwuvnvX1mUN5UNl7Civ4YgiS5ZcyTTupO9dNPviFcvNMLrMeUuw6f4G0rs2De4IPBWRvfoyVO0DS28Rbe6ML-HdLU7HTYrG1k21MIy8jKDrLhiYnVWjv4BqxijDkhoq8xEyJGwzwQF7zuLnjNQmLo-gDDuGrwLPVJ84hites7Olz22O6Blreefu2JvyqlV4KusFgZz2u-9MypCHuI8FutVuSRzX2BEBFbXDKjNb6bxu8UpOo9gFq45oxNikVCR06TfhF3-o-Dg";
-      if (TOKEN != 'Usuario no encontrado') {
-        localStorage.setItem("token", TOKEN);
-        // bander para no preguntar nuevamente si esta o no autenticado
-        localStorage.setItem("EstaAutenticado", true);
-        this.$router.push({ name: "buscarXid" });
-      } else {
-        console.log("Error de autenticación");
+    async login() {
+      try {
+        /* Obtener el token dinámicamente */
+        const TOKEN = await obtenerTokenFacade(
+          this.usuario,
+          this.password,
+          this.email
+        );
+
+        if (TOKEN && TOKEN !== 'Usuario no encontrado') {
+          localStorage.setItem("token", TOKEN);
+          // bandera para no preguntar nuevamente si esta o no autenticado
+          localStorage.setItem("EstaAutenticado", true);
+          this.$router.push({ name: "buscarXid" });
+        } else {
+          console.log("Error de autenticación");
+        }
+      } catch (error) {
+        console.error("Error al obtener el token:", error);
+        alert("Error de autenticación. Verifica tus credenciales.");
       }
     },
   },
