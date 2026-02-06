@@ -1,13 +1,19 @@
 <template>
-  
+  <h1>Hola desde la vista login</h1>
+  <nav></nav>
+  <section><Login /></section>
+  <footer></footer>
 </template>
 
 <script>
-export default {
+import Login from "../components/Login.vue";
 
-}
+export default {
+  components: {
+    Login,
+  },
+};
 </script>
 
-<style>
-
+<style scoped>
 </style>

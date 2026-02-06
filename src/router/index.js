@@ -11,6 +11,12 @@ const routes = [
       esPublica: false,
     },
   },
+  ,
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/LoginView.vue"),
+  },
   {
     path: "/ListarTodos",
     name: "ListarTodos",
@@ -82,11 +88,18 @@ const router = createRouter({
 });
 
 /*configuración del guardian */
-
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     // enviarlo a una zona de login
     console.log("ruta protegida, debe autenticarse");
+    const estaAutenticado = localStorage.getItem("EstaAutenticado");
+    const token = localStorage.getItem("token");
+    if (!estaAutenticado) {
+      console.log("No autenticado redirige al login");
+      next({ name: "login" });
+    } else {
+      next();
+    }
   } else {
     // le dejo pasar sin redirecciones
     console.log("ruta libremente accesible");
